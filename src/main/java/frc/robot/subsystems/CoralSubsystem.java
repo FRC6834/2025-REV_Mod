@@ -27,18 +27,15 @@ public class CoralSubsystem extends SubsystemBase {
     kLevel4;
   }
 
-  // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
-  // initialize the closed loop controller and encoder.
+  // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to initialize the closed loop controller and encoder.
   private SparkMax armMotor = new SparkMax(CoralSubsystemConstants.kArmMotorCanId, MotorType.kBrushless);
   private SparkClosedLoopController armController = armMotor.getClosedLoopController();
   private RelativeEncoder armEncoder = armMotor.getEncoder();
 
-  // Initialize elevator SPARK. We will use MAXMotion position control for the elevator, so we also
-  // need to initialize the closed loop controller and encoder.
-  private SparkMax elevatorMotor = new SparkMax(CoralSubsystemConstants.kElevatorMotor1CanId, MotorType.kBrushless);
-  //This motor needs to follow elevatorMotor - do we need a second LoopController???
-  private SparkMax elevatorMotorFollow = new SparkMax(CoralSubsystemConstants.kElevatorMotor2CanId, MotorType.kBrushless);
-  private SparkClosedLoopController elevatorClosedLoopController = elevatorMotor.getClosedLoopController();
+  // Initialize elevator SPARK. We will use MAXMotion position control for the elevator, so we also need to initialize the closed loop controller and encoder.
+  private SparkMax elevatorMotor = new SparkMax(CoralSubsystemConstants.kElevatorMotorLeadCanId, MotorType.kBrushless);
+  private SparkMax elevatorMotorFollow = new SparkMax(CoralSubsystemConstants.kElevatorMotorFollowCanId, MotorType.kBrushless);
+  private SparkClosedLoopController elevatorController = elevatorMotor.getClosedLoopController();
   private RelativeEncoder elevatorEncoder = elevatorMotor.getEncoder();
 
   // Initialize intake SPARK. We will use open loop control for this so we don't need a closed loop controller like above.
@@ -47,8 +44,8 @@ public class CoralSubsystem extends SubsystemBase {
   // Member variables for subsystem state management
   private boolean wasResetByButton = false;
   private boolean wasResetByLimit = false;
-  private double armCurrentTarget = ArmSetpoints.kFeederStation;
-  private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+  private double armCurrentTarget = ArmSetpoints.kFeederStation; //STARTING POSITION
+  private double elevatorCurrentTarget = ElevatorSetpoints.kFeederStation; //STARTING POSITION
 
   public CoralSubsystem() {
     /*
@@ -67,22 +64,26 @@ public class CoralSubsystem extends SubsystemBase {
         Configs.CoralSubsystem.elevatorConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+    elevatorMotorFollow.configure(
+        Configs.CoralSubsystem.elevatorFollowerConfig.follow(elevatorMotor), //follows the lead elevator motor
+        ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
     intakeMotor.configure(
         Configs.CoralSubsystem.intakeConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
   }
 
-  /**
-   * Drive the arm and elevator motors to their respective setpoints. This will use MAXMotion
-   * position control which will allow for a smooth acceleration and deceleration to the mechanisms' setpoints.
+  /*
+   * Drive the arm and elevator motors to their respective setpoints. 
+   * This will use MAXMotion position control which will allow for a smooth acceleration and deceleration to the mechanisms' setpoints.
    */
   private void moveToSetpoint() {
     armController.setReference(armCurrentTarget, ControlType.kMAXMotionPositionControl);
-    elevatorClosedLoopController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
+    elevatorController.setReference(elevatorCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
 
-  /** Zero the elevator encoder when the limit switch is pressed. */
+  // Zero the elevator encoder when the limit switch is pressed.
   private void zeroElevatorOnLimitSwitch() {
     if (!wasResetByLimit && elevatorMotor.getReverseLimitSwitch().isPressed()) {
       // Zero the encoder only when the limit switch is switches from "unpressed" to "pressed" to prevent constant zeroing while pressed
@@ -93,7 +94,7 @@ public class CoralSubsystem extends SubsystemBase {
     }
   }
 
-  /** Zero the arm and elevator encoders when the user button is pressed on the roboRIO. */
+  // Zero the arm and elevator encoders when the user button is pressed on the roboRIO.
   private void zeroOnUserButton() {
     if (!wasResetByButton && RobotController.getUserButton()) {
       // Zero the encoders only when button switches from "unpressed" to "pressed" to prevent constant zeroing while pressed
@@ -105,14 +106,14 @@ public class CoralSubsystem extends SubsystemBase {
     }
   }
 
-  /** Set the intake motor power in the range of [-1, 1]. */
+  // Set the intake motor power in the range of [-1, 1].
   private void setIntakePower(double power) {
     intakeMotor.set(power);
   }
 
-  /**
-   * Command to set the subsystem setpoint. This will set the arm and elevator to their predefined
-   * positions for the given setpoint.
+  /*
+   * Command to set the subsystem setpoint. 
+   * This will set the arm and elevator to their predefined positions for the given setpoint.
    */
   public Command setSetpointCommand(Setpoint setpoint) {
     return this.runOnce(
@@ -142,17 +143,13 @@ public class CoralSubsystem extends SubsystemBase {
         });
   }
 
-  /**
-   * Command to run the intake motor. When the command is interrupted, e.g. the button is released, the motor will stop.
-   */
+  // Command to run the intake motor. When the command is interrupted (button is released) the motor will stop.
   public Command runIntakeCommand() {
     return this.startEnd(
         () -> this.setIntakePower(IntakeSetpoints.kForward), () -> this.setIntakePower(0.0));
   }
 
-  /**
-   * Command to reverses the intake motor. When the command is interrupted, e.g. the button is released, the motor will stop.
-   */
+  // Command to run the intake motor in reverse. When the command is interrupted (button is released) the motor will stop.
   public Command reverseIntakeCommand() {
     return this.startEnd(
         () -> this.setIntakePower(IntakeSetpoints.kReverse), () -> this.setIntakePower(0.0));

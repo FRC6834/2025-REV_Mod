@@ -56,16 +56,14 @@ public final class Configs {
   public static final class CoralSubsystem {
     public static final SparkMaxConfig armConfig = new SparkMaxConfig();
     public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+    public static final SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
     public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
     static {
       // Configure basic settings of the arm motor
       armConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12);
 
-      /*
-       * Configure the closed loop controller. We want to make sure we set the
-       * feedback sensor as the primary encoder.
-       */
+      // Configure the closed loop controller. We want to make sure we set the feedback sensor as the primary encoder.
       armConfig
           .closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -78,23 +76,20 @@ public final class Configs {
           .maxAcceleration(10000)
           .allowedClosedLoopError(0.25);
 
-      // Configure basic settings of the elevator motor
+      // Configure basic settings of the elevator motors
       elevatorConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
+      elevatorFollowerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
 
       /*
-       * Configure the reverse limit switch for the elevator. By enabling the limit switch, this
-       * will prevent any actuation of the elevator in the reverse direction if the limit switch is
-       * pressed.
+       * Configure the reverse limit switch for the elevator. 
+       * By enabling the limit switch, this will prevent any actuation of the elevator in the reverse direction if the limit switch is pressed.
        */
       elevatorConfig
           .limitSwitch
           .reverseLimitSwitchEnabled(true)
           .reverseLimitSwitchType(Type.kNormallyOpen);
 
-      /*
-       * Configure the closed loop controller. We want to make sure we set the
-       * feedback sensor as the primary encoder.
-       */
+      // Configure the closed loop controller. We want to make sure we set the feedback sensor as the primary encoder.
       elevatorConfig
           .closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -118,17 +113,13 @@ public final class Configs {
 
     static {
       // Configure basic setting of the arm motor
-      armConfig.smartCurrentLimit(40);
+      armConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40);
 
-      /*
-       * Configure the closed loop controller. We want to make sure we set the
-       * feedback sensor as the primary encoder.
-       */
+      //Configure the closed loop controller. We want to make sure we set the feedback sensor as the primary encoder.
       armConfig
           .closedLoop
           .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-          // Set PID values for position control. We don't need to pass a closed
-          // loop slot, as it will default to slot 0.
+          // Set PID values for position control. We don't need to pass a closed loop slot, as it will default to slot 0.
           .p(0.1)
           .outputRange(-0.5, 0.5);
 

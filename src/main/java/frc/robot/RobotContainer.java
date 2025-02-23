@@ -41,10 +41,9 @@ public class RobotContainer {
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
   // The driver's controller
-  CommandXboxController m_driverController =
-      new CommandXboxController(OIConstants.kDriverControllerPort);
+  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -65,8 +64,8 @@ public class RobotContainer {
                     true),
             m_robotDrive));
 
-    // Set the ball intake to in/out when not running based on internal state
     // Default position can be changed in Algae Subsystem code
+    // Default position is currently the "stowed" state
     m_algaeSubsystem.setDefaultCommand(m_algaeSubsystem.idleCommand());
   }
 
@@ -119,9 +118,13 @@ public class RobotContainer {
      *******************************************************************************************/
 
     // Right Trigger -> Run algae intake, set to leave out when idle
+    // Should make the algae arm drop and rotate the wheels to intake algae when Right Trigger is held
+    // When the right trigger is released the arm should move to its hold position and apply power to wheels to keep the algae contained
     m_driverController.rightTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_algaeSubsystem.runIntakeCommand());
 
     // Left Trigger -> Run ball intake in reverse, set to stow when idle
+    // Should make the wheels spin and score the algae from the arms hold position
+    // When the left trigger is released the arm should return to its stow position
     m_driverController.leftTrigger(OIConstants.kTriggerButtonThreshold).whileTrue(m_algaeSubsystem.reverseIntakeCommand());
   }
 
@@ -129,7 +132,7 @@ public class RobotContainer {
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
-   *     <p>This will be replaced with PathPlanner code
+   * This will be replaced with PathPlanner code
    */
   public Command getAutonomousCommand() {
     // Create config for trajectory

@@ -14,14 +14,14 @@ import edu.wpi.first.math.util.Units;
  * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
 
   public static final class CoralSubsystemConstants {
-    public static final int kElevatorMotor1CanId = 9;
-    public static final int kElevatorMotor2CanId = 10;
+    public static final int kElevatorMotorLeadCanId = 9;
+    public static final int kElevatorMotorFollowCanId = 10;
     public static final int kArmMotorCanId = 11;
     public static final int kIntakeMotorCanId = 12;
 
@@ -55,6 +55,7 @@ public final class Constants {
     public static final int kArmMotorCanId = 14;
 
     // These setpoints are the number of rotations it takes the motor to reach each position
+    // Encoders should be zeroed when the algae arm is out (fully deployed)
     public static final class ArmSetpoints {
       public static final double kStow = 18.5;
       public static final double kHold = 11.5;

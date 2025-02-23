@@ -19,8 +19,7 @@ import frc.robot.Configs;
 import frc.robot.Constants.AlgaeSubsystemConstants;
 
 public class AlgaeSubsystem extends SubsystemBase {
-  // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to
-  // initialize the closed loop controller and encoder.
+  // Initialize arm SPARK. We will use MAXMotion position control for the arm, so we also need to initialize the closed loop controller and encoder.
   private SparkMax armMotor = new SparkMax(AlgaeSubsystemConstants.kArmMotorCanId, MotorType.kBrushless);
   private SparkClosedLoopController armController = armMotor.getClosedLoopController();
   private RelativeEncoder armEncoder = armMotor.getEncoder();
@@ -36,12 +35,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     /*
      * Apply the configuration to the SPARKs.
      *
-     * kResetSafeParameters is used to get the SPARK to a known state. This
-     * is useful in case the SPARK is replaced.
+     * kResetSafeParameters is used to get the SPARK to a known state. This is useful in case the SPARK is replaced.
      *
-     * kPersistParameters is used to ensure the configuration is not lost when
-     * the SPARK loses power. This is useful for power cycles that may occur
-     * mid-operation.
+     * kPersistParameters is used to ensure the configuration is not lost when the SPARK loses power. 
+     * This is useful for power cycles that may occur mid-operation.
      */
     intakeMotor.configure(
         Configs.AlgaeSubsystem.intakeConfig,
@@ -72,12 +69,12 @@ public class AlgaeSubsystem extends SubsystemBase {
    * Command to run the algae intake. This will extend the arm to its "down" position and run the
    * motor at its "forward" power to intake the ball.
    *
-   * <p>This will also update the idle state to hold onto the ball when this command is not running.
+   * This will also update the idle state to hold onto the ball when this command is not running.
    */
   public Command runIntakeCommand() {
     return this.run(
         () -> {
-          stowWhenIdle = false;
+          stowWhenIdle = false; //set to false so that the arm will stay in a scoring state rather than stow
           setIntakePower(AlgaeSubsystemConstants.IntakeSetpoints.kForward);
           setIntakePosition(AlgaeSubsystemConstants.ArmSetpoints.kDown);
         });
@@ -87,12 +84,12 @@ public class AlgaeSubsystem extends SubsystemBase {
    * Command to run the algae intake in reverse. This will extend the arm to its "hold" position and
    * run the motor at its "reverse" power to eject the ball.
    *
-   * <p>This will also update the idle state to stow the arm when this command is not running.
+   * This will also update the idle state to stow the arm when this command is not running.
    */
   public Command reverseIntakeCommand() {
     return this.run(
         () -> {
-          stowWhenIdle = true;
+          stowWhenIdle = true; //arm returns to stow state when done since Algae has been scored
           setIntakePower(AlgaeSubsystemConstants.IntakeSetpoints.kReverse);
           setIntakePosition(AlgaeSubsystemConstants.ArmSetpoints.kHold);
         });
