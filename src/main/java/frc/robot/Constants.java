@@ -51,8 +51,8 @@ public final class Constants {
   }
 
   public static final class AlgaeSubsystemConstants {
-    public static final int kIntakeMotorCanId = 13;
-    public static final int kArmMotorCanId = 14;
+    public static final int kIntakeMotorCanId = 14;
+    public static final int kArmMotorCanId = 13;
 
     // These setpoints are the number of rotations it takes the motor to reach each position
     // Encoders should be zeroed when the algae arm is out (fully deployed)
@@ -96,7 +96,7 @@ public final class Constants {
     public static final int kFrontLeftDrivingCanId = 1;
     public static final int kRearLeftDrivingCanId = 3;
     public static final int kFrontRightDrivingCanId = 5;
-    public static final int kRearRightDrivingCanId = 6;
+    public static final int kRearRightDrivingCanId = 7;
 
     public static final int kFrontLeftTurningCanId = 2;
     public static final int kRearLeftTurningCanId = 4;
