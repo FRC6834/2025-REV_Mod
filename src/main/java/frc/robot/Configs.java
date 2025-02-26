@@ -77,8 +77,11 @@ public final class Configs {
           .allowedClosedLoopError(0.25);
 
       // Configure basic settings of the elevator motors
-      elevatorConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
+      elevatorConfig.inverted(true).idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
       elevatorFollowerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
+
+    
+      elevatorFollowerConfig.inverted(true);
 
       /*
        * Configure the reverse limit switch for the elevator. 

@@ -30,17 +30,17 @@ public final class Constants {
       public static final int kFeederStation = 0;
       public static final int kLevel1 = 0;
       public static final int kLevel2 = 0;
-      public static final int kLevel3 = 100;
-      public static final int kLevel4 = 150;
+      public static final int kLevel3 = 50; //100
+      public static final int kLevel4 = 80; //150
     }
 
     // These setpoints are the number of rotations it takes the motor to reach each position
     public static final class ArmSetpoints {
-      public static final double kFeederStation = 33;
+      public static final double kFeederStation = -30; //33
       public static final double kLevel1 = 0;
-      public static final double kLevel2 = 2;
-      public static final double kLevel3 = 2;
-      public static final double kLevel4 = 19;
+      public static final double kLevel2 = -2;
+      public static final double kLevel3 = -2;
+      public static final double kLevel4 = -10; //19
     }
 
     // These setpoints refer to the motor power applied for certain tasks
@@ -57,8 +57,8 @@ public final class Constants {
     // These setpoints are the number of rotations it takes the motor to reach each position
     // Encoders should be zeroed when the algae arm is out (fully deployed)
     public static final class ArmSetpoints {
-      public static final double kStow = 18.5;
-      public static final double kHold = 11.5;
+      public static final double kStow = 20; //18.5
+      public static final double kHold = 11.5;//11.5
       public static final double kDown = 0;
     }
 
