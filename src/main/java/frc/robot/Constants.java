@@ -20,27 +20,27 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static final class CoralSubsystemConstants {
-    public static final int kElevatorMotorLeadCanId = 9;
+    public static final int kElevatorMotorLeadCanId = 9; //the magnetic limit switch needs plugged into this motor controller
     public static final int kElevatorMotorFollowCanId = 10;
     public static final int kArmMotorCanId = 11;
     public static final int kIntakeMotorCanId = 12;
 
     // These setpoints are the number of rotations it takes the motor to reach each level
     public static final class ElevatorSetpoints {
-      public static final int kFeederStation = 0;
-      public static final int kLevel1 = 0;
-      public static final int kLevel2 = 0;
-      public static final int kLevel3 = 50; //100
-      public static final int kLevel4 = 80; //150
+      public static final int kFeederStation = 0; //elevator does not move up
+      public static final int kLevel1 = 0; //elevator does not move up
+      public static final int kLevel2 = 0; //elevator does not move up
+      public static final int kLevel3 = 50; //100 - original
+      public static final int kLevel4 = 80; //150 - original
     }
 
     // These setpoints are the number of rotations it takes the motor to reach each position
     public static final class ArmSetpoints {
-      public static final double kFeederStation = -30; //33
-      public static final double kLevel1 = 0;
-      public static final double kLevel2 = -2;
-      public static final double kLevel3 = -2;
-      public static final double kLevel4 = -10; //19
+      public static final double kFeederStation = 40; //33 - original
+      public static final double kLevel1 = 0; //Arm should be zeroed pushed all the way down facing the opposite direction as algae intake
+      public static final double kLevel2 = 2;
+      public static final double kLevel3 = 22;
+      public static final double kLevel4 = 10; //19 - original
     }
 
     // These setpoints refer to the motor power applied for certain tasks

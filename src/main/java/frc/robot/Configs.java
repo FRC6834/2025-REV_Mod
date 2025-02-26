@@ -56,12 +56,16 @@ public final class Configs {
   public static final class CoralSubsystem {
     public static final SparkMaxConfig armConfig = new SparkMaxConfig();
     public static final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-    public static final SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig();
+    public static final SparkMaxConfig elevatorFollowerConfig = new SparkMaxConfig(); //Don't need to have closed loop controller since it is just following lead
     public static final SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
     static {
       // Configure basic settings of the arm motor
-      armConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(40).voltageCompensation(12);
+      armConfig
+        .inverted(true)
+        .idleMode(IdleMode.kCoast)
+        .smartCurrentLimit(40)
+        .voltageCompensation(12);
 
       // Configure the closed loop controller. We want to make sure we set the feedback sensor as the primary encoder.
       armConfig
@@ -78,10 +82,7 @@ public final class Configs {
 
       // Configure basic settings of the elevator motors
       elevatorConfig.inverted(true).idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
-      elevatorFollowerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
-
-    
-      elevatorFollowerConfig.inverted(true);
+      elevatorFollowerConfig.inverted(true).idleMode(IdleMode.kCoast).smartCurrentLimit(50).voltageCompensation(12);
 
       /*
        * Configure the reverse limit switch for the elevator. 

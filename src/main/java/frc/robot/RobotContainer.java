@@ -85,7 +85,7 @@ public class RobotContainer {
     m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
     // Start Button -> Zero swerve heading
-    m_driverController.start().onTrue(m_robotDrive.zeroHeadingCommand());
+    m_driverController.back().onTrue(m_robotDrive.zeroHeadingCommand());
 
     /******************************************************************************************
      * CORAL CONTROLS
@@ -101,16 +101,19 @@ public class RobotContainer {
      * ELEVATOR CONTROLS
      *******************************************************************************************/
 
-    // B Button -> Elevator to human player position, set ball intake to stow when idle
-    m_driverController.b().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kFeederStation).alongWith(m_algaeSubsystem.stowCommand()));
+    //Start Button -> Elevator does not move, flips coral intake to algae side of bot to collect coral
+    m_driverController.start().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kFeederStation).alongWith(m_algaeSubsystem.stowCommand()));
+    
+    // A Button -> Elevator and coral arm to L1 position
+    m_driverController.a().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel1));
 
-    // A Button -> Elevator to L2 position
-    m_driverController.a().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
+    // B Button -> Elevator and coral arm to L2 position
+    m_driverController.b().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel2));
 
-    // X Button -> Elevator to L3 position
+    // X Button -> Elevator and coral arm to L3 position
     m_driverController.x().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel3));
 
-    // Y Button -> Elevator/Arm to L4 position
+    // Y Button -> Elevator and coral arm to L4 position
     m_driverController.y().onTrue(m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
 
     /******************************************************************************************
