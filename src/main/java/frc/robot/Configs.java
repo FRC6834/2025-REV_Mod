@@ -117,7 +117,7 @@ public final class Configs {
 
     static {
       // Configure basic setting of the arm motor
-      armConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(40);
+      armConfig.inverted(true).idleMode(IdleMode.kBrake).smartCurrentLimit(40);
 
       //Configure the closed loop controller. We want to make sure we set the feedback sensor as the primary encoder.
       armConfig

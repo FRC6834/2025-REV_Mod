@@ -30,17 +30,17 @@ public final class Constants {
       public static final int kFeederStation = 0; //elevator does not move up
       public static final int kLevel1 = 0; //elevator does not move up
       public static final int kLevel2 = 0; //elevator does not move up
-      public static final int kLevel3 = 50; //100 - original
-      public static final int kLevel4 = 80; //150 - original
+      public static final int kLevel3 = 67; //100 - original
+      public static final int kLevel4 = 164; //150 - original
     }
 
     // These setpoints are the number of rotations it takes the motor to reach each position
     public static final class ArmSetpoints {
-      public static final double kFeederStation = 40; //33 - original
-      public static final double kLevel1 = 0; //Arm should be zeroed pushed all the way down facing the opposite direction as algae intake
-      public static final double kLevel2 = 2;
-      public static final double kLevel3 = 22;
-      public static final double kLevel4 = 10; //19 - original
+      public static final double kFeederStation = 116; //33 - original
+      public static final double kLevel1 = 10; //Arm should be zeroed pushed all the way down facing the opposite direction as algae intake
+      public static final double kLevel2 = 20;
+      public static final double kLevel3 = 20;
+      public static final double kLevel4 = 20; //19 - original
     }
 
     // These setpoints refer to the motor power applied for certain tasks
@@ -57,9 +57,9 @@ public final class Constants {
     // These setpoints are the number of rotations it takes the motor to reach each position
     // Encoders should be zeroed when the algae arm is out (fully deployed)
     public static final class ArmSetpoints {
-      public static final double kStow = 20; //18.5
+      public static final double kStow = 0; //18.5
       public static final double kHold = 11.5;//11.5
-      public static final double kDown = 0;
+      public static final double kDown = 20;
     }
 
     // These setpoints refer to the motor power applied for certain tasks
