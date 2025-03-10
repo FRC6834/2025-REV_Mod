@@ -141,8 +141,30 @@ public class CoralSubsystem extends SubsystemBase {
               break;
           }
         });
+        
   }
-
+  public Command feeder(Setpoint setpoint) {
+    return this.runOnce(
+        () -> {
+          switch (setpoint) {
+            default:
+              armCurrentTarget = ArmSetpoints.kFeederStation;
+              elevatorCurrentTarget = ElevatorSetpoints.kFeederStation;
+              break;
+          }
+        });
+  }  
+  public Command l4(Setpoint setpoint) {
+    return this.runOnce(
+        () -> {
+          switch (setpoint) {
+            default:
+              armCurrentTarget = ArmSetpoints.kLevel4;
+              elevatorCurrentTarget = ElevatorSetpoints.kLevel4;
+              break;
+          }
+        });
+  }
   // Command to run the intake motor. When the command is interrupted (button is released) the motor will stop.
   public Command runIntakeCommand() {
     return this.startEnd(
