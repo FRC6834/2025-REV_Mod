@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AutoAlign;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.CoralSubsystem.Setpoint;
@@ -87,15 +88,17 @@ public class RobotContainer {
     // Start Button -> Zero swerve heading
     m_driverController.back().onTrue(m_robotDrive.zeroHeadingCommand());
 
+ // swapped with coarl -> Run AlignAndDriveToTarget command
+    m_driverController.leftBumper().whileTrue(new AutoAlign(m_robotDrive));
     /******************************************************************************************
      * CORAL CONTROLS
      *******************************************************************************************/
 
     // Left Bumper -> Run coral intake (bring in coral)
-    m_driverController.leftBumper().whileTrue(m_coralSubSystem.runIntakeCommand());
+    m_driverController.rightStick().whileTrue(m_coralSubSystem.runIntakeCommand());
 
     // Right Bumper -> Run coral intake in reverse (spit out coral)
-    m_driverController.rightBumper().whileTrue(m_coralSubSystem.reverseIntakeCommand());
+    m_driverController.rightBumper().onTrue(m_coralSubSystem.reverseIntakeCommand());
 
     /******************************************************************************************
      * ELEVATOR CONTROLS

@@ -168,6 +168,23 @@ public class DriveSubsystem extends SubsystemBase {
     return this.runOnce(() -> navX.reset());
   }
 
+
+    /**
+     * Returns the heading of the robot as a Rotation2d.
+     *
+     * @return The robot's heading as a Rotation2d.
+     */
+    /**
+     * Returns the heading of the robot as a Rotation2d.
+     *
+     * @return The robot's heading as a Rotation2d.
+     */
+    public Rotation2d getRotation2d() {
+      double heading = navX.getAngle();
+      Rotation2d rotation = Rotation2d.fromDegrees(heading);
+      System.out.println("NavX Heading: " + heading + " degrees"); // Add this line
+      return rotation;
+  }
   /**
    * Returns the heading of the robot.
    *
