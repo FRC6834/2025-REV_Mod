@@ -10,17 +10,22 @@ import frc.robot.AprilTagHeightDB;
 
 public class AutoAlign extends Command {
     private final DriveSubsystem m_swerve;
-    // Corrected table name
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-    private final PIDController rotationPID = new PIDController(0.05, 0, 0); // Tune
-    private final PIDController distancePID = new PIDController(0.1, 0, 0); // Tune
-    private final double rotationTolerance = 0.20; // Degrees
-    private final double distanceTolerance = 0.1; // Meters
+    private final PIDController rotationPID = new PIDController(1.0, 0, 0); // P gain (no units)
+    private final PIDController distancePID = new PIDController(2.5, 0.0, 0.2); // P gain (no units), D gain (no units)
+    private final PIDController headingPID = new PIDController(2, 0, 0); // P gain (no units)
 
-    private final double limelightHeight = 0.2032; // Meters - Adjust to your Limelight height
-    private final double limelightAngle = 0.0; // Degrees - Adjust to your Limelight angle
+    private final double rotationTolerance = 0.5; // Degrees
+    private final double distanceTolerance = 0.05; // Meters
+    private final double headingTolerance = 1.0; // Degrees
 
+    private final double limelightHeight = 0.2032; // Meters
+    private final double limelightAngle = 0.0; // Degrees
+    /*larger values make the heading adjustments more aggressive at longer distances.
+    smaller values make the heading adjustments less aggressive at longer distances */
+    private final double desiredTargetArea = 5.0;
+    
     public AutoAlign(DriveSubsystem swerve) {
         m_swerve = swerve;
         addRequirements(m_swerve);
@@ -28,37 +33,48 @@ public class AutoAlign extends Command {
 
     @Override
     public void initialize() {
-        rotationPID.setSetpoint(0);
-        distancePID.setSetpoint(1.0); // Set the desired distance (example: 1 meter)
+        rotationPID.setSetpoint(0); // Degrees
+        distancePID.setSetpoint(0.5); // Meters
     }
 
     @Override
     public void execute() {
-        double tv = table.getEntry("tv").getDouble(0.0);
-        double tx = table.getEntry("tx").getDouble(0.0);
-        double tid = table.getEntry("tid").getDouble(0.0);
-        double targetHeight = AprilTagHeightDB.getHeight(tid);
-
-        System.out.println("tv: " + tv + ", tx: " + tx); // Debugging output
-
+        double tv = table.getEntry("tv").getDouble(0.0); // No units (1.0 if target is visible, 0.0 otherwise)
         if (tv == 1.0) {
-            double rotationOutput = rotationPID.calculate(tx);
+            double tx = table.getEntry("tx").getDouble(0.0); // Degrees
+            double rotationOutput = rotationPID.calculate(tx); // Degrees
+
+            double tid = table.getEntry("tid").getDouble(0.0); // ID number (no units)
+            double targetHeight = AprilTagHeightDB.getHeight(tid); // Meters
 
             if (targetHeight != -1) {
-                double distanceOutput = distancePID.calculate(calculateDistance(targetHeight));
+                double distanceOutput = distancePID.calculate(calculateDistance(targetHeight)); // Meters/second
 
-                rotationOutput = Math.max(Math.min(rotationOutput, 0.2), -0.2); // Limit speed
-                distanceOutput = Math.max(Math.min(distanceOutput, 0.2), -0.2); // Limit speed
+                // Deceleration zone
+                double currentDistance = calculateDistance(targetHeight); // Meters
+                double speedScale = Math.min(1.0, currentDistance / 1.0); // No units
+                distanceOutput *= speedScale; // Meters/second
+
+                rotationOutput = Math.max(Math.min(rotationOutput, 0.2), -0.2); // Radians/second
+                distanceOutput = Math.max(Math.min(distanceOutput, 0.2), -0.2); // Meters/second
+
+                double ty = table.getEntry("ty").getDouble(0.0); // Degrees
+                double ta = table.getEntry("ta").getDouble(0.0); // Percentage of Limelight's FOV (no units)
+
+                double headingOutput = headingPID.calculate(ty); // Degrees
+
+                // Scale heading output based on target area
+                double headingScale = Math.min(1.0, ta / desiredTargetArea); // No units
+                headingOutput *= headingScale; // Degrees
 
                 ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                        distanceOutput, // Forward/backward
-                        0.0, // No left/right
-                        Math.toRadians(rotationOutput), // Angular velocity
-                        m_swerve.getRotation2d()
+                    distanceOutput, // Meters/second
+                    0.0, // Meters/second
+                    Math.toRadians(rotationOutput + headingOutput), // Radians/second
+                    m_swerve.getRotation2d() // Rotation2d (no units)
                 );
 
                 m_swerve.drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, true);
-                System.out.println("rotationOutput: " + rotationOutput + ", distanceOutput: " + distanceOutput + ", omega: " + chassisSpeeds.omegaRadiansPerSecond + ", vx: " + chassisSpeeds.vxMetersPerSecond); // More debugging
             } else {
                 m_swerve.drive(0.0, 0.0, 0.0, false);
             }
@@ -69,27 +85,19 @@ public class AutoAlign extends Command {
 
     @Override
     public boolean isFinished() {
-        double tv = table.getEntry("tv").getDouble(0.0);
-        if (tv == 0.0) {
-            // Stop if the target is no longer visible
-            return true;
-        }
-
-        double tx = table.getEntry("tx").getDouble(0.0);
-        double tid = table.getEntry("tid").getDouble(0.0);
-        double targetHeight = AprilTagHeightDB.getHeight(tid);
-
+        double tv = table.getEntry("tv").getDouble(0.0); // No units
+        double tx = table.getEntry("tx").getDouble(0.0); // Degrees
+        double tid = table.getEntry("tid").getDouble(0.0); // ID number
+        double targetHeight = AprilTagHeightDB.getHeight(tid); // Meters
         if (targetHeight == -1) {
-            // Stop if we can't get the target height.
             return true;
         }
 
-        double distanceError = Math.abs(calculateDistance(targetHeight) - distancePID.getSetpoint());
+        double distanceError = Math.abs(calculateDistance(targetHeight) - distancePID.getSetpoint()); // Meters
+        double ty = table.getEntry("ty").getDouble(0.0); // Degrees
+        double currentVelocity = Math.abs(m_swerve.getRobotRelativeSpeeds().vxMetersPerSecond); // Meters/second
 
-        // Check if both rotation and distance are within tolerances
-        boolean finished = Math.abs(tx) < rotationTolerance && distanceError < distanceTolerance;
-        System.out.println("Finished: " + finished);
-        return finished;
+        return (Math.abs(tx) < rotationTolerance && distanceError < distanceTolerance && Math.abs(ty) < headingTolerance && currentVelocity < 0.05) || tv == 0.0; // Reduced tolerance and added velocity check
     }
 
     @Override
@@ -98,8 +106,10 @@ public class AutoAlign extends Command {
     }
 
     private double calculateDistance(double targetHeight) {
-        double ty = table.getEntry("ty").getDouble(0.0);
-        double angleToTarget = ty + limelightAngle;
-        return (targetHeight - limelightHeight) / Math.tan(Math.toRadians(angleToTarget));
+        double ty = table.getEntry("ty").getDouble(0.0); // Degrees
+        double angleToTarget = ty + limelightAngle; // Degrees
+        double distance = (targetHeight - limelightHeight) / Math.tan(Math.toRadians(angleToTarget)); // Meters
+        System.out.println("Calculated Distance: " + distance); // Meters
+        return distance; // Meters
     }
 }
