@@ -7,24 +7,48 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.AprilTagHeightDB;
+import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
 
 public class AutoAlign extends Command {
-    private final DriveSubsystem m_swerve;
+
+    private final PIDController rotationController = new PIDController(1.0, 0, 0);
+    private final PIDController distanceController = new PIDController(2.5, 0.0, 0.2); 
+    private final PIDController heightController = new PIDController(2, 0, 0); 
+    double tagID = -1;
+    private DriveSubsystem m_robotDrive;
+
+    @Override
+    public void intitalize() {
+        rotationController.setSetpoint();
+        distanceController.setSetpoint();
+        heightController.setSetpoint();
+
+        rotationController.setTolerance(0.5); // in degrees
+        distanceController.setTolerance(0.05); // in meters
+        heightController.setTolerance(1.0); // in degrees
+
+        tagID = LimelightHelpers.getFiducialID("");
+    }
+
+    @Override
+    public void execute() {
+        
+    }
+
+  /*  private final DriveSubsystem m_swerve;
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-    private final PIDController rotationPID = new PIDController(1.0, 0, 0); // P gain (no units)
-    private final PIDController distancePID = new PIDController(2.5, 0.0, 0.2); // P gain (no units), D gain (no units)
-    private final PIDController headingPID = new PIDController(2, 0, 0); // P gain (no units)
+    private final PIDController rotationPID = new PIDController(1.0, 0, 0);
+    private final PIDController distancePID = new PIDController(2.5, 0.0, 0.2); 
+    private final PIDController headingPID = new PIDController(2, 0, 0); 
 
     private final double rotationTolerance = 0.5; // Degrees
     private final double distanceTolerance = 0.05; // Meters
     private final double headingTolerance = 1.0; // Degrees
 
-    private final double limelightHeight = 0.2032; // Meters
-    private final double limelightAngle = 0.0; // Degrees
-    /*larger values make the heading adjustments more aggressive at longer distances.
-    smaller values make the heading adjustments less aggressive at longer distances */
-    private final double desiredTargetArea = 5.0;
+    private final double limelightHeight = Constants.LimelightConstants.MOUNT_HEIGHT;
+    private final double limelightAngle = Constants.LimelightConstants.MOUNT_ANGLE;
     
     public AutoAlign(DriveSubsystem swerve) {
         m_swerve = swerve;
@@ -33,8 +57,10 @@ public class AutoAlign extends Command {
 
     @Override
     public void initialize() {
-        rotationPID.setSetpoint(0); // Degrees
-        distancePID.setSetpoint(0.5); // Meters
+        rotationPID.setSetpoint(0);
+        distancePID.setSetpoint(0.5); 
+       this.m_robotDrive = DriveSubsystem.m_robotDrive;
+        addRequirements(m_robotDrive);
     }
 
     @Override
@@ -112,4 +138,5 @@ public class AutoAlign extends Command {
         System.out.println("Calculated Distance: " + distance); // Meters
         return distance; // Meters
     }
+        */
 }

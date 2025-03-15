@@ -149,4 +149,9 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
+  public static final class LimelightConstants{
+    public static final double MOUNT_ANGLE = 0; 
+    public static final double MOUNT_HEIGHT = 3.5; //vertical distance from ground to the limelight IN INCHES the LL is currently mounted at 3.5 inches or 0.0889 meters
+  }
+
 }

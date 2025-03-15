@@ -10,15 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.AutoAlign;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CoralSubsystem.Setpoint;
 import frc.robot.subsystems.DriveSubsystem;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -33,6 +32,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -42,7 +42,6 @@ public class RobotContainer {
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
     
-
     //Setting up named commands for PathPlanner
     NamedCommands.registerCommand("RunAlgaeIntake", m_algaeSubsystem.runIntakeCommand());
     NamedCommands.registerCommand("ReverseAlgaeIntake", m_algaeSubsystem.reverseIntakeCommand());
@@ -54,7 +53,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("ElevatorToLevel4", m_coralSubSystem.setSetpointCommand(Setpoint.kLevel4));
     NamedCommands.registerCommand("RunCoralIntake", m_coralSubSystem.runIntakeCommand());
     NamedCommands.registerCommand("ReverseCoralIntake", m_coralSubSystem.reverseIntakeCommand());
-    NamedCommands.registerCommand("AutoAlign", new AutoAlign(m_robotDrive));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -99,16 +97,17 @@ public class RobotContainer {
     // Left Stick Button -> Set swerve to X position (prevent being pushed)
     m_driverController.leftStick().whileTrue(m_robotDrive.setXCommand());
 
-    // Start Button -> Zero swerve heading
+    // Back Button -> Zero swerve heading
     m_driverController.back().onTrue(m_robotDrive.zeroHeadingCommand());
 
- // swapped with coral -> Run AlignAndDriveToTarget command
-    m_driverController.leftBumper().whileTrue(new AutoAlign(m_robotDrive));
+    // Left Bumper -> Run command to auto-align robot chassis according to AprilTag 
+    m_driverController.leftBumper().onTrue(m_limelightSubsystem.alignChassisCommand());
+
     /******************************************************************************************
      * CORAL CONTROLS
      *******************************************************************************************/
 
-    // Left Bumper -> Run coral intake (bring in coral)
+    // Right stick -> Run coral intake (bring in coral)
     m_driverController.rightStick().whileTrue(m_coralSubSystem.runIntakeCommand());
 
     // Right Bumper -> Run coral intake in reverse (spit out coral)
