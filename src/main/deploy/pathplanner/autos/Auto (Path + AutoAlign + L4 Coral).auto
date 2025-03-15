@@ -9,18 +9,24 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "ElevatorToLevel4"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Test Drive"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorToLevel4"
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoAlign"
           }
         },
         {
