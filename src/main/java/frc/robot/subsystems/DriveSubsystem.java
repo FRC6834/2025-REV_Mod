@@ -3,11 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import java.io.IOException;
-
-import org.json.simple.parser.ParseException;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -24,8 +19,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Configs;
-import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -227,8 +220,8 @@ public class DriveSubsystem extends SubsystemBase {
           this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
           (speeds, feedforwards) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
           new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                  new PIDConstants(0.04, 0.0, 0.0), // Translation PID constants
-                  new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants
+                  new PIDConstants(5, 0.0, 0.0), // Translation PID constants
+                  new PIDConstants(2, 0.0, 0.0) // Rotation PID constants
           ),
           config, // The robot configuration
           () -> {
