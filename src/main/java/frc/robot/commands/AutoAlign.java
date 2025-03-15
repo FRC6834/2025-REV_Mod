@@ -1,40 +1,90 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.AprilTagHeightDB;
-import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class AutoAlign extends Command {
+  private PIDController distanceController, heightController, rotationController;
+  private boolean isRightScore;
+  private Timer dontSeeTagTimer, stopTimer;
+  private DriveSubsystem m_robotDrive;
+  private double tagID = -1;
 
-    private final PIDController rotationController = new PIDController(1.0, 0, 0);
-    private final PIDController distanceController = new PIDController(2.5, 0.0, 0.2); 
-    private final PIDController heightController = new PIDController(2, 0, 0); 
-    double tagID = -1;
-    private DriveSubsystem m_robotDrive;
+  public AutoAlign(boolean isRightScore, DriveSubsystem m_robotDrive) {
+    distanceController = new PIDController(2.5, 0.0, 0);  // Vertical movement
+    heightController = new PIDController(2, 0.0, 0);  // Horitontal movement
+    rotationController = new PIDController(1, 0, 0);  // Rotation
+    this.isRightScore = isRightScore;
+    this.m_robotDrive = m_robotDrive;
+    addRequirements(m_robotDrive);
+  }
 
-    @Override
-    public void intitalize() {
-        rotationController.setSetpoint();
-        distanceController.setSetpoint();
-        heightController.setSetpoint();
+  @Override
+  public void initialize() {
+    this.stopTimer = new Timer();
+    this.stopTimer.start();
+    this.dontSeeTagTimer = new Timer();
+    this.dontSeeTagTimer.start();
 
-        rotationController.setTolerance(0.5); // in degrees
-        distanceController.setTolerance(0.05); // in meters
-        heightController.setTolerance(1.0); // in degrees
+    rotationController.setSetpoint(0.05);
+    rotationController.setTolerance(0.5);
 
-        tagID = LimelightHelpers.getFiducialID("");
+    distanceController.setSetpoint(0.05);
+    distanceController.setTolerance(0.05);
+
+    heightController.setSetpoint(isRightScore ? 0.05 : -0.05);
+    heightController.setTolerance(1);
+
+    tagID = LimelightHelpers.getFiducialID("");
+  }
+
+  @Override
+  public void execute() {
+    if (LimelightHelpers.getTV("") && LimelightHelpers.getFiducialID("") == tagID) {
+      this.dontSeeTagTimer.reset();
+
+      double[] postions = LimelightHelpers.getBotPose_TargetSpace("");
+      SmartDashboard.putNumber("x", postions[2]);
+
+      double xSpeed = distanceController.calculate(postions[2]);
+      SmartDashboard.putNumber("xspee", xSpeed);
+      double ySpeed = -heightController.calculate(postions[0]);
+      double rotValue = -rotationController.calculate(postions[4]);
+
+      m_robotDrive.drive(xSpeed, ySpeed, rotValue, false);
+
+      if (!rotationController.atSetpoint() ||
+          !heightController.atSetpoint() ||
+          !distanceController.atSetpoint()) {
+        stopTimer.reset();
+      }
+    } else {
+      m_robotDrive.drive(1, 1, 0, false);
     }
 
-    @Override
-    public void execute() {
-        
-    }
+    SmartDashboard.putNumber("poseValidTimer", stopTimer.get());
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_robotDrive.drive(0, 0, 0, false);
+  }
+
+  @Override
+  public boolean isFinished() {
+    // Requires the robot to stay in the correct position for 0.3 seconds, as long as it gets a tag in the camera
+    return this.dontSeeTagTimer.hasElapsed(0.3) ||
+        stopTimer.hasElapsed(0.3);
+  }
+}
 
   /*  private final DriveSubsystem m_swerve;
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -139,4 +189,3 @@ public class AutoAlign extends Command {
         return distance; // Meters
     }
         */
-}

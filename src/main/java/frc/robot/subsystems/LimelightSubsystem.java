@@ -1,14 +1,9 @@
 package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.AprilTagHeightDB;
 import frc.robot.Constants;
-import frc.robot.LimelightHelpers;
-import frc.robot.Constants.CoralSubsystemConstants.IntakeSetpoints;
-
 
 public class LimelightSubsystem extends SubsystemBase {
 
@@ -65,14 +60,5 @@ public class LimelightSubsystem extends SubsystemBase {
             final double angle = table.getEntry("tx").getDouble(0);
             return angle*(Math.PI/180);
         }
-
-        public void alignChassis() {
-
-                }
-        
-                  public Command alignChassisCommand() {
-            return this.startEnd(
-                () -> this.alignChassis(), () -> this.alignChassis());
-  }
     
     }
