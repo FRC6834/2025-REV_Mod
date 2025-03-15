@@ -14,6 +14,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -29,6 +31,9 @@ import frc.robot.subsystems.CoralSubsystem.Setpoint;
 import frc.robot.subsystems.DriveSubsystem;
 import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -41,11 +46,18 @@ public class RobotContainer {
   private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
+  private final SendableChooser<Command> autoChooser;
+
   // The driver's controller
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   // The container for the robot. Contains subsystems, OI devices, and commands.
   public RobotContainer() {
+    
+
+    //Setting up named commands for PathPlanner
+    //NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -68,6 +80,10 @@ public class RobotContainer {
     // Default position can be changed in Algae Subsystem code
     // Default position is currently the "stowed" state
     m_algaeSubsystem.setDefaultCommand(m_algaeSubsystem.idleCommand());
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
   }
 
   /**
@@ -138,10 +154,13 @@ public class RobotContainer {
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
-   * This will be replaced with PathPlanner code
    */
   public Command getAutonomousCommand() {
-    // Create config for trajectory
+    return autoChooser.getSelected();
+
+/* Old code for AUTO
+ * 
+ * // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
@@ -183,5 +202,9 @@ public class RobotContainer {
 
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+ * 
+ *
+ */
+
   }
 }
