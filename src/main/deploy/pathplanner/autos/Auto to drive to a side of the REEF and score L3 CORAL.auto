@@ -9,30 +9,24 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorToLevel3"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "Test Drive"
+                  "pathName": "Path to a side of the REEF"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "ElevatorToLevel4"
+                  "name": "RunCoralIntake"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoAlign"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RunCoralIntake"
           }
         }
       ]

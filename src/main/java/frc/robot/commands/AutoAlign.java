@@ -19,9 +19,9 @@ public class AutoAlign extends Command {
   private double tagID = -1;
 
   public AutoAlign(boolean isRightScore, DriveSubsystem m_robotDrive) {
-    distanceController = new PIDController(2.5, 0.0, 0);  // Vertical movement
-    heightController = new PIDController(2, 0.0, 0);  // Horitontal movement
-    rotationController = new PIDController(1, 0, 0);  // Rotation
+    distanceController = new PIDController(2.5, 0.0, 0);  
+    heightController = new PIDController(2, 0.0, 0); 
+    rotationController = new PIDController(1, 0, 0);  
     this.isRightScore = isRightScore;
     this.m_robotDrive = m_robotDrive;
     addRequirements(m_robotDrive);
