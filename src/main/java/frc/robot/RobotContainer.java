@@ -18,6 +18,7 @@ import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CoralSubsystem.Setpoint;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.AutoAlign;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -101,7 +102,7 @@ public class RobotContainer {
     m_driverController.back().onTrue(m_robotDrive.zeroHeadingCommand());
 
     // Left Bumper -> Run command to auto-align robot chassis according to AprilTag 
-    m_driverController.leftBumper().onTrue(m_limelightSubsystem.alignChassisCommand());
+    m_driverController.leftBumper().onTrue(new AutoAlign(true, m_robotDrive).withTimeout(3));
 
     /******************************************************************************************
      * CORAL CONTROLS
