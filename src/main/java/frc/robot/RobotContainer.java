@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CoralSubsystem.Setpoint;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.commands.AutoAlign;
@@ -33,7 +32,6 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final CoralSubsystem m_coralSubSystem = new CoralSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
-  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
