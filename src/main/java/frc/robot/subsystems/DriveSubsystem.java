@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -55,7 +54,7 @@ public class DriveSubsystem extends SubsystemBase {
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(navX.getAngle()),
+          Rotation2d.fromDegrees(-navX.getAngle()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -63,66 +62,11 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
           });
 
-  // Creates a new DriveSubsystem.
-  public DriveSubsystem() {
-        // All other subsystem initialization
-    // ...
-
-    // Load the RobotConfig from the GUI settings. You should probably
-    // store this in your Constants file
-
-    RobotConfig config;
-    try {
-      config = RobotConfig.fromGUISettings();
-      // Configure AutoBuilder last
-      AutoBuilder.configure(
-          this::getPose, // Robot pose supplier
-          this::resetOdometry, // Method to reset odometry (will be called if your auto has a
-          // starting pose)
-          this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-          (speeds, feedforwards) ->
-              drive(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,false), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
-          // Also optionally outputs individual module feedforwards
-          new PPHolonomicDriveController( // PPHolonomicController is the built in path following
-              // controller for holonomic drive trains
-              new PIDConstants(5, 0, 0), // Translation PID constants
-              new PIDConstants(2, 0, .0) // Rotation PID constants
-              ),
-          config, // The robot configuration
-          () -> {
-            // Boolean supplier that controls when the path will be mirrored for the red alliance
-            // This will flip the path being followed to the red side of the field.
-            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-              return alliance.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-          },
-          this // Reference to this subsystem to set requirements
-          );
-    } catch (Exception e) {
-      DriverStation.reportError("autobuilderfailed", e.getStackTrace());
-    }
-  }
-
-  public ChassisSpeeds getRobotRelativeSpeeds() {
-    var robotSpeeds =
-        DriveConstants.kDriveKinematics.toChassisSpeeds(
-            m_frontLeft.getState(),
-            m_frontRight.getState(),
-            m_rearLeft.getState(),
-            m_rearRight.getState());
-    return robotSpeeds;
-  }
-
-
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(navX.getAngle()),
+        Rotation2d.fromDegrees(-navX.getAngle()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -147,7 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(navX.getAngle()),
+        Rotation2d.fromDegrees(-navX.getAngle()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -178,7 +122,7 @@ public class DriveSubsystem extends SubsystemBase {
                     xSpeedDelivered,
                     ySpeedDelivered,
                     rotDelivered,
-                    Rotation2d.fromDegrees(navX.getAngle()))
+                    Rotation2d.fromDegrees(-navX.getAngle()))
                 : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -198,7 +142,7 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
         });
   }
-
+  
   /**
    * Sets the swerve ModuleStates.
    *
@@ -225,13 +169,34 @@ public class DriveSubsystem extends SubsystemBase {
     return this.runOnce(() -> navX.reset());
   }
 
+
+    /**
+     * Returns the heading of the robot as a Rotation2d.
+     *
+     * @return The robot's heading as a Rotation2d.
+     */
+    /**
+     * Returns the heading of the robot as a Rotation2d.
+     *
+     * @return The robot's heading as a Rotation2d.
+     */
+    public Rotation2d getRotation2d() {
+      double heading = -navX.getAngle();
+      Rotation2d rotation = Rotation2d.fromDegrees(heading);
+      System.out.println("NavX Heading: " + heading + " degrees"); // Add this line
+      return rotation;
+  }
+  public ChassisSpeeds getRobotRelativeSpeeds(){
+    var robotSpeeds = DriveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(), m_frontRight.getState(), m_rearLeft.getState(), m_rearRight.getState());
+    return robotSpeeds;
+  }
   /**
    * Returns the heading of the robot.
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(navX.getAngle()).getDegrees();
+    return Rotation2d.fromDegrees(-navX.getAngle()).getDegrees();
   }
 
   /**
@@ -240,6 +205,39 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return navX.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return -navX.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
-}
+
+  // Creates a new DriveSubsystem with AutoBuilder configuration
+  public DriveSubsystem() {
+
+    RobotConfig config;
+    try{
+        config = RobotConfig.fromGUISettings();
+        AutoBuilder.configure(
+          this::getPose, // Robot pose supplier
+          this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+          this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+          (speeds, feedforwards) -> drive(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, false), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+          new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                  new PIDConstants(5, 0.0, 0.0), // Translation PID constants
+                  new PIDConstants(2, 0.0, 0.0) // Rotation PID constants
+          ),
+          config, // The robot configuration
+          () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+          },
+          this // Reference to this subsystem to set requirements
+      );
+      } catch (Exception e) {
+        DriverStation.reportError("autobuilderfailed",e.getStackTrace());
+      }
+    }
+  }
