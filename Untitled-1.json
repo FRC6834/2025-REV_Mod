@@ -1,0 +1,395 @@
+[
+    {
+        "messageType": 2,
+        "timestamp": 29.94896697998047,
+        "seqNumber": 629,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 29.973167419433594,
+        "seqNumber": 630,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 30.01982879638672,
+        "seqNumber": 631,
+        "line": "NT: Got a NT3 connection from 10.68.34.201 port 64197"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 30.022560119628906,
+        "seqNumber": 632,
+        "line": "NT: CONNECTED NT3 client 'SmartDashboard-NT3@10.68.34.201:64197' (from 10.68.34.201:64197)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 30.08484649658203,
+        "seqNumber": 633,
+        "line": "NT: Got a NT4 connection from 10.68.34.69 port 44054"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 30.088478088378906,
+        "seqNumber": 634,
+        "line": "NT: CONNECTED NT4 client 'limelight@2' (from 10.68.34.69:44054)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.730873107910156,
+        "seqNumber": 635,
+        "line": "Instantiating NavX on roboRIO MXP Port."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.732505798339844,
+        "seqNumber": 636,
+        "line": "NavX: Library for FRC"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.73560333251953,
+        "seqNumber": 637,
+        "line": "NavX: Connected."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.737266540527344,
+        "seqNumber": 638,
+        "line": "NavX: Board Type 50 (navX2-MXP (Gen 2))"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.739479064941406,
+        "seqNumber": 639,
+        "line": "NavX: firmware version 4.0.447"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.740943908691406,
+        "seqNumber": 640,
+        "line": "NavX: startup initialization and startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.747718811035156,
+        "seqNumber": 641,
+        "line": "NavX: onboard startup calibration complete."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 31.749534606933594,
+        "seqNumber": 642,
+        "line": "NavX: Yaw angle auto-reset to 0.0 due to startup calibration."
+    },
+    {
+        "timestamp": 33.406639099121094,
+        "seqNumber": 643,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "Joystick Button 9 on port 0 not available, check if controller is plugged in",
+        "location": "edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.40729522705078,
+        "seqNumber": 644,
+        "line": "Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1346): Joystick Button 9 on port 0 not available, check if controller is plugged in"
+    },
+    {
+        "timestamp": 33.87334442138672,
+        "seqNumber": 645,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "PathPlanner attempted to create a command 'AutoAlign' that has not been registered with NamedCommands.registerCommand",
+        "location": "com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.874000549316406,
+        "seqNumber": 646,
+        "line": "Warning at com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65): PathPlanner attempted to create a command 'AutoAlign' that has not been registered with NamedCommands.registerCommand"
+    },
+    {
+        "timestamp": 33.935523986816406,
+        "seqNumber": 647,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "PathPlanner attempted to create a command 'spit' that has not been registered with NamedCommands.registerCommand",
+        "location": "com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.93651580810547,
+        "seqNumber": 648,
+        "line": "Warning at com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65): PathPlanner attempted to create a command 'spit' that has not been registered with NamedCommands.registerCommand"
+    },
+    {
+        "timestamp": 33.967872619628906,
+        "seqNumber": 649,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "PathPlanner attempted to create a command 'L4' that has not been registered with NamedCommands.registerCommand",
+        "location": "com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.968406677246094,
+        "seqNumber": 650,
+        "line": "Warning at com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65): PathPlanner attempted to create a command 'L4' that has not been registered with NamedCommands.registerCommand"
+    },
+    {
+        "timestamp": 33.96996307373047,
+        "seqNumber": 651,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "PathPlanner attempted to create a command 'Feeder' that has not been registered with NamedCommands.registerCommand",
+        "location": "com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.97032928466797,
+        "seqNumber": 652,
+        "line": "Warning at com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65): PathPlanner attempted to create a command 'Feeder' that has not been registered with NamedCommands.registerCommand"
+    },
+    {
+        "timestamp": 33.971900939941406,
+        "seqNumber": 653,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "PathPlanner attempted to create a command 'setx' that has not been registered with NamedCommands.registerCommand",
+        "location": "com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 33.97240447998047,
+        "seqNumber": 654,
+        "line": "Warning at com.pathplanner.lib.auto.NamedCommands.getCommand(NamedCommands.java:65): PathPlanner attempted to create a command 'setx' that has not been registered with NamedCommands.registerCommand"
+    },
+    {
+        "timestamp": 34.01972198486328,
+        "seqNumber": 655,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "Unhandled exception: java.lang.IllegalArgumentException: Multiple commands in a parallel composition cannot require the same subsystems",
+        "location": "com.pathplanner.lib.auto.CommandUtil.parallelGroupFromData(CommandUtil.java:103)",
+        "callStack": "\tat edu.wpi.first.wpilibj2.command.ParallelCommandGroup.addCommands(ParallelCommandGroup.java:55)\n\tat com.pathplanner.lib.auto.CommandUtil.parallelGroupFromData(CommandUtil.java:103)\n\tat com.pathplanner.lib.auto.CommandUtil.commandFromJson(CommandUtil.java:50)\n\tat com.pathplanner.lib.auto.CommandUtil.sequentialGroupFromData(CommandUtil.java:93)\n\tat com.pathplanner.lib.auto.CommandUtil.commandFromJson(CommandUtil.java:49)\n\tat com.pathplanner.lib.commands.PathPlannerAuto.initFromJson(PathPlannerAuto.java:647)\n\tat com.pathplanner.lib.commands.PathPlannerAuto.<init>(PathPlannerAuto.java:103)\n\tat com.pathplanner.lib.commands.PathPlannerAuto.<init>(PathPlannerAuto.java:63)\n\tat com.pathplanner.lib.auto.AutoBuilder.buildAutoChooserWithOptionsModifier(AutoBuilder.java:432)\n\tat com.pathplanner.lib.auto.AutoBuilder.buildAutoChooser(AutoBuilder.java:391)\n\tat com.pathplanner.lib.auto.AutoBuilder.buildAutoChooser(AutoBuilder.java:379)\n\tat frc.robot.RobotContainer.<init>(RobotContainer.java:79)\n\tat frc.robot.Robot.robotInit(Robot.java:31)\n\tat edu.wpi.first.wpilibj.TimedRobot.startCompetition(TimedRobot.java:107)\n\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:419)\n\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)\n\tat frc.robot.Main.main(Main.java:23)\n",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02045440673828,
+        "seqNumber": 656,
+        "line": "Error at com.pathplanner.lib.auto.CommandUtil.parallelGroupFromData(CommandUtil.java:103): Unhandled exception: java.lang.IllegalArgumentException: Multiple commands in a parallel composition cannot require the same subsystems"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02080535888672,
+        "seqNumber": 657,
+        "line": "\tat edu.wpi.first.wpilibj2.command.ParallelCommandGroup.addCommands(ParallelCommandGroup.java:55)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.021095275878906,
+        "seqNumber": 658,
+        "line": "\tat com.pathplanner.lib.auto.CommandUtil.parallelGroupFromData(CommandUtil.java:103)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02214813232422,
+        "seqNumber": 659,
+        "line": "\tat com.pathplanner.lib.auto.CommandUtil.commandFromJson(CommandUtil.java:50)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.022605895996094,
+        "seqNumber": 660,
+        "line": "\tat com.pathplanner.lib.auto.CommandUtil.sequentialGroupFromData(CommandUtil.java:93)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02283477783203,
+        "seqNumber": 661,
+        "line": "\tat com.pathplanner.lib.auto.CommandUtil.commandFromJson(CommandUtil.java:49)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02306365966797,
+        "seqNumber": 662,
+        "line": "\tat com.pathplanner.lib.commands.PathPlannerAuto.initFromJson(PathPlannerAuto.java:647)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.023414611816406,
+        "seqNumber": 663,
+        "line": "\tat com.pathplanner.lib.commands.PathPlannerAuto.<init>(PathPlannerAuto.java:103)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.023841857910156,
+        "seqNumber": 664,
+        "line": "\tat com.pathplanner.lib.commands.PathPlannerAuto.<init>(PathPlannerAuto.java:63)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.024147033691406,
+        "seqNumber": 665,
+        "line": "\tat com.pathplanner.lib.auto.AutoBuilder.buildAutoChooserWithOptionsModifier(AutoBuilder.java:432)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02454376220703,
+        "seqNumber": 666,
+        "line": "\tat com.pathplanner.lib.auto.AutoBuilder.buildAutoChooser(AutoBuilder.java:391)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02495574951172,
+        "seqNumber": 667,
+        "line": "\tat com.pathplanner.lib.auto.AutoBuilder.buildAutoChooser(AutoBuilder.java:379)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.025169372558594,
+        "seqNumber": 668,
+        "line": "\tat frc.robot.RobotContainer.<init>(RobotContainer.java:79)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.025367736816406,
+        "seqNumber": 669,
+        "line": "\tat frc.robot.Robot.robotInit(Robot.java:31)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02556610107422,
+        "seqNumber": 670,
+        "line": "\tat edu.wpi.first.wpilibj.TimedRobot.startCompetition(TimedRobot.java:107)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02600860595703,
+        "seqNumber": 671,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:419)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02629852294922,
+        "seqNumber": 672,
+        "line": "\tat edu.wpi.first.wpilibj.RobotBase.startRobot(RobotBase.java:510)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02655792236328,
+        "seqNumber": 673,
+        "line": "\tat frc.robot.Main.main(Main.java:23)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02678680419922,
+        "seqNumber": 674,
+        "line": ""
+    },
+    {
+        "timestamp": 34.02783966064453,
+        "seqNumber": 675,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 0,
+        "details": "The robot program quit unexpectedly. This is usually due to a code error.\n  The above stacktrace can help determine where the error occurred.\n  See https://wpilib.org/stacktrace for more information.",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:433)",
+        "callStack": "",
+        "messageType": 1
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.02855682373047,
+        "seqNumber": 676,
+        "line": "Warning at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:433): The robot program quit unexpectedly. This is usually due to a code error."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.028846740722656,
+        "seqNumber": 677,
+        "line": "  The above stacktrace can help determine where the error occurred."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.029075622558594,
+        "seqNumber": 678,
+        "line": "  See https://wpilib.org/stacktrace for more information."
+    },
+    {
+        "timestamp": 34.030052185058594,
+        "seqNumber": 679,
+        "numOccur": 1,
+        "errorCode": 1,
+        "flags": 1,
+        "details": "The startCompetition() method (or methods called by it) should have handled the exception above.",
+        "location": "edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:440)",
+        "callStack": "",
+        "messageType": 0
+    },
+    {
+        "messageType": 2,
+        "timestamp": 34.030540466308594,
+        "seqNumber": 680,
+        "line": "Error at edu.wpi.first.wpilibj.RobotBase.runRobot(RobotBase.java:440): The startCompetition() method (or methods called by it) should have handled the exception above."
+    },
+    {
+        "messageType": 2,
+        "timestamp": 36.752479553222656,
+        "seqNumber": 681,
+        "line": "********** Robot program starting **********"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 36.77367401123047,
+        "seqNumber": 682,
+        "line": "NT: Listening on NT3 port 1735, NT4 port 5810"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 36.967063903808594,
+        "seqNumber": 683,
+        "line": "NT: Got a NT3 connection from 10.68.34.201 port 64205"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 36.980613708496094,
+        "seqNumber": 684,
+        "line": "NT: CONNECTED NT3 client 'SmartDashboard-NT3@10.68.34.201:64205' (from 10.68.34.201:64205)"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 37.066246032714844,
+        "seqNumber": 685,
+        "line": "NT: Got a NT4 connection from 10.68.34.69 port 35472"
+    },
+    {
+        "messageType": 2,
+        "timestamp": 37.068382263183594,
+        "seqNumber": 686,
+        "line": "NT: CONNECTED NT4 client 'limelight@2' (from 10.68.34.69:35472)"
+    }
+]
